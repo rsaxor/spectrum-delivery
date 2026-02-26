@@ -1,4 +1,3 @@
-// src/app/jobs/[id]/edit/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -35,6 +34,7 @@ export default function EditJobPage() {
   const [deliveryNo, setDeliveryNo] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
   const [location, setLocation] = useState("");
+  const [contactNo, setContactNo] = useState("");
   
   const [jobName, setJobName] = useState("");
   const [client, setClient] = useState("");
@@ -60,6 +60,7 @@ export default function EditJobPage() {
           setDeliveryNo(data.deliveryNo || "");
           setDeliveryDate(data.deliveryDate || "");
           setLocation(data.location || "");
+          setContactNo(data.contactNo || "");
           setJobName(data.jobName || "");
           setClient(data.client || "");
           setAmount(data.amount || "");
@@ -102,6 +103,7 @@ export default function EditJobPage() {
         deliveryNo,
         deliveryDate,
         location,
+        contactNo,
         jobName,
         client,
         amount: Number(amount),
@@ -166,6 +168,14 @@ export default function EditJobPage() {
                 onChange={(e) => setLocation(e.target.value)} 
                 placeholder="Dafza, Emaar, etc." 
                 required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">Contact No.</Label>
+              <Input 
+                value={contactNo} 
+                onChange={(e) => setContactNo(e.target.value)} 
+                placeholder="" 
               />
             </div>
           </CardContent>

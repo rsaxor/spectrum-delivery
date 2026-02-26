@@ -6,9 +6,11 @@ interface MasterProps {
   job: Job | null;
   driver: string;
   packages: Package[];
+  totalQuantity?: string;
+  salesPerson?: string;
 }
 
-export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job, driver, packages }, ref) => {
+export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job, driver, packages, totalQuantity, salesPerson }, ref) => {
   if (!job) return null;
 
   return (
@@ -48,8 +50,8 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
               </p>
               <p className="border-b border-green-900 mb-0 text-xs mt-1 font-bold">
                 Contact/Tel: <br />
-                <span className="w-full block font-normal text-sm h-4">
-
+                <span className="w-full block font-normal text-sm">
+                  {job?.contactNo || ""}
                 </span>
               </p>
             </div>
@@ -59,6 +61,7 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
       </div>
       <div className="">
         <table className="border-collapse mt-1 w-full">
+          <tbody>
           <tr>
             <td>
               Invoice #: <span className="font-black">{job.invoiceNo}</span>
@@ -67,6 +70,7 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
               <p className="font-black text-xl my-2">{job.jobName}</p>
             </td>
           </tr>
+          </tbody>
         </table>
       </div>
       <table className="w-full mb-3 border-collapse mt-1 text-sm">
@@ -100,26 +104,31 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
         <thead>
           <tr className="bg-green-800 text-white leading-none">
             <th className="border border-gray-500 px-2 py-3 text-center w-16">Pkg #</th>
-            <th className="border border-gray-500 px-2 py-3 text-left w-25">Item No.</th>
+            {/* <th className="border border-gray-500 px-2 py-3 text-left w-25">Item No.</th> */}
             <th className="border border-gray-500 px-2 py-3 text-left">Description</th>
             <th className="border border-gray-500 px-2 py-3 text-center w-24">Qty</th>
-            <th className="border border-gray-500 px-2 py-3 text-left">Remarks</th>
+            {/* <th className="border border-gray-500 px-2 py-3 text-left">Remarks</th> */}
           </tr>
         </thead>
         <tbody>
           {packages.map((pkg, i) => (
             <tr key={i} className="text-sm leading-none odd:bg-green-50">
               <td className="border border-gray-500 px-2 py-3 text-center font-bold">{pkg.id}</td>
-              <td className="border border-gray-500 px-2 py-3">{pkg.itemNo}</td>
+              {/* <td className="border border-gray-500 px-2 py-3">{pkg.itemNo}</td> */}
               <td className="border border-gray-500 px-2 py-3">{pkg.desc}</td>
               <td className="border border-gray-500 px-2 py-3 text-center">{pkg.qty}</td>
-              <td className="border border-gray-500 px-2 py-3 text-sm leading-none">{pkg.remarks}</td>
+              {/* <td className="border border-gray-500 px-2 py-3 text-sm leading-none">{pkg.remarks}</td> */}
             </tr>
           ))}
         </tbody>
       </table>
       {/* FOOTER SIGNATURES */}
-      <div className="bg-green-900 print-footer text-white mt-auto">
+      <div className="mt-auto">
+        <div className="flex flex-row justify-between">
+          <p className="text-right my-3 text-md">{driver ? <>Logistic: <strong>{driver}</strong> | </> : <></>} Sales person: <strong>{salesPerson}</strong></p>
+          <p className="text-right my-3 text-md">Total Job Quantity: <strong>{totalQuantity || "Missing"}</strong></p>
+        </div>
+        <div className="bg-green-900 print-footer text-white mt-auto">
           <p className="font-bold mb-9 text-md">Checked by:</p>
           <div className="flex md:flex-row justify-end">
             <div className="w-full md:w-1/2">
@@ -129,6 +138,7 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
               <p className="text-sm border-t border-white w-3/4">Date</p>
             </div>
           </div>
+        </div>
         </div>
     </div>
   );

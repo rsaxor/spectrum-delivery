@@ -16,97 +16,77 @@ export const LabelTemplate = forwardRef<HTMLDivElement, LabelTemplateProps>(({ d
 
   return (
     <div ref={ref} className={`font-sans bg-white text-black ${sizePreview ? "sheet-a4" : "sheet-a5"}`}>
-      <div className="p-5 h-full flex flex-col justify-between">
-        {/* Header */}
-        <div className="bg-green-900 print-header text-white">
-          <div className="flex md:flex-row items-stretch">
-              {/* LEFT COLUMN - 2/3 */}
-              <div className="w-full md:w-3/5">
-                <p className="text-md font-bold">
-                  Client: <br />
-                  <span className="border-b border-white w-full block font-normal text-sm">
-                    {data.job?.client}
-                  </span>
-                </p>
-
-                <p className="text-md mt-5 font-bold">
-                  Address: <br />
-                  <span className="border-b border-white w-full block font-normal text-sm">
-                    {data.job?.location}
-                  </span>
-                </p>
-                <p className="text-md mt-5 font-bold">
-                  Despatch Date: <br />
-                  <span className="border-b border-white w-full block font-normal text-sm">
-                    {new Date().toLocaleDateString()}
-                  </span>
-                </p>
-                <p className="text-md mt-5 font-bold">
-                  Logistics: <br />
-                  <span className="border-b border-white w-full block font-normal text-sm">
-                    {data.driver}
-                  </span>
-                </p>
+      <div className="p-4">
+        <div className="border-b border-dotted border-black flex flex-row items-stretch">
+          <div className="w-2/3">
+            <div className="bg-green-900 py-3 text-white mb-4">
+              <Image
+                src="/spec-white.png"
+                alt="Spectrum logo"
+                width={87}
+                height={87}
+                className={`h-auto object-contain block mx-auto`}
+                priority
+                unoptimized
+              />
+            </div>
+            <div className="leading-none">
+              <div className="border-black border-b border-dotted pb-2">
+                <p className="text-sm">Client: <span className="uppercase text-3xl font-bold">{data.job?.client}</span></p>
+                <p className="text-sm">Invoice No: {data.job?.invoiceNo}</p>
               </div>
-
-              {/* RIGHT COLUMN - 1/3 */}
-              <div className="text-leading-7 w-full md:w-2/5 text-right uppercase text-white font-black text-4xl md:mt-0 pl-5 flex flex-col justify-between">
-                <Image
-                  src="/spec-white.png"
-                  alt="Spectrum logo"
-                  width={170}
-                  height={170}
-                  className={`print-logo h-auto object-contain block ml-auto`}
-                  priority
-                />
-                <p>Package <br />Slip</p>
+              <div className="border-black border-b border-dotted py-2">
+                <p className="text-sm">Job name: <span className="uppercase text-xl font-bold">{data.job?.jobName}</span></p>
+                <p className="text-sm">Contact No: {data.job?.contactNo || "N/A"}</p>
               </div>
+              <div className="border-black border-b border-dotted py-2">
+                <p className="text-sm">Address/Delivery to: <span className="uppercase text-xl font-bold"><br />{data.job?.location}</span></p>
+              </div>
+              <div className="border-black py-2 flex flex-row items-stretch pr-5">
+                <p className="text-sm pr-3">Package/Item description: </p>
+                <p className="text-xl font-bold w-full">{data.desc}</p>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Description */}
-        <div className="text-center">
-          <p className="mt-5 text-2xl font-bold">{data.desc}</p>
-        </div>
-
-        {/* Details Grid */}
-        <div className="grow flex flex-col justify-center gap-8 py-8">
-          <div className="grid grid-cols-2 gap-4 text-md">
-            <p><strong>Job Name:</strong> {data.job?.jobName}</p>
-            <p><strong>Invoice No:</strong> {data.job?.invoiceNo}</p>
-            <p><strong>Item No:</strong> {data.itemNo}</p>
-            <p><strong>Quantity:</strong> {data.qty}</p>
-          </div>
-
-          {/* Sequence Badge */}
-          <div className="text-center p-6 rounded-xl border-2 border-dashed border-gray-400 h-1/2 flex flex-col justify-center">
-            <div>
-              <p className="text-md uppercase text-gray-500 mb-2">Package Sequence</p>
-              <p className="text-8xl font-black tracking-tighter">
-                {data.id} <span className="text-5xl text-gray-400 tracking-tight">/ {data.totalBoxes}</span>
+          <div className="w-1/3 border-black border-l border-dotted">
+            <div className="border-black border-b border-dotted pl-3 pb-1">
+              <p className="m-0">Quantity:</p>
+              <p className="text-center text-4xl pb-3 font-bold">{data.qty} / {data.totalQuantity}</p>
+            </div>
+            <div className="pl-3 pt-1">
+              <p className="m-0">No. of Boxes</p>
+              <p className="text-center text-5xl">
+                <span className="pt-2 block font-bold">{data.id}</span>
+                <span className="block py-5 text-4xl">of</span>
+                <span className="block font-bold">{data.totalBoxes}</span>
               </p>
             </div>
           </div>
-
-          {/* Remarks */}
-          {data.remarks && (
-            <div className="bg-yellow-50 p-4 border border-yellow-200 text-sm">
-              <p className="font-bold">Remarks:</p>
-              <p>{data.remarks}</p>
-            </div>
-          )}
         </div>
-
-        {/* Footer */}
-        <div className="bg-green-900 print-footer text-white">
-          <p className="font-bold mb-9 text-md">Checked by:</p>
-          <div className="flex md:flex-row justify-end">
-            <div className="w-full md:w-1/2">
-              <p className="text-sm border-t border-white w-3/4">Signature</p>
-            </div>
-            <div className="w-full md:w-1/2">
-              <p className="text-sm border-t border-white w-3/4">Date</p>
-            </div>
+        <div className="flex flex-row items-stretch py-3">
+          <div>
+            <Image
+              src="/productcare.png"
+              alt="product care"
+              width={220}
+              height={220}
+              className={`h-auto object-contain`}
+              priority
+              unoptimized
+            />
+          </div>
+          <div className="pl-4">
+            <p className="text-[8px] mb-1 leading-none">
+              Spectrum Sustainable Printing Solutions is committed to sustainable printing practices and values respect for people, tradition and the environment. Our papers are ECF FSC™-certified (FSC™ C018501) and all of our printing material contains paper from the finest paper mills around the world.
+            </p>
+            <p className="text-[8px] mb-1 leading-none">
+              To ensure the quality of our sustainable printing products, such as books, packaging, boxes, and hard case covers, it is important to store them at room temperature of 20°C. The materials must be kept in a dry environment with a relative humidity of 60% and should not be exposed to direct sunlight or heat.
+            </p>
+            <p className="text-[8px] mb-1 leading-none">
+              Please be aware that customized sustainable printing products may be more sensitive to temperature and humidity variations. As such, it is the responsibility of the customer to ensure proper storage and handling during transportation, as we cannot be held responsible for any damage that may occur during international or local transportation. </p>
+            <p className="text-[8px] mb-1 leading-none">
+              Level B1, The Gate, P.O. Box 482043, DIFC, Dubai, UAE | Tel.: +971 4 362 0566 | E-mail: info@spectrumdubai.com | www.spectrumdubai.com
+            </p>
           </div>
         </div>
       </div>

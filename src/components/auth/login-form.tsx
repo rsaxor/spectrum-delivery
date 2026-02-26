@@ -1,4 +1,3 @@
-// components/auth/login-form.tsx
 "use client";
 
 import { useState, useEffect } from "react"; // <-- Added useEffect

@@ -177,8 +177,8 @@
 
 /* A5 Portrait Class */
 .sheet-a5 {
-  width: 148mm;
-  height: 210mm;
+  width: 210mm;
+  height: calc(297mm/2);
   background: white;
   margin: auto;
   /* padding: 10mm; */
@@ -197,7 +197,7 @@
     /* gap: 0.125px; */
 }
 .sheet-a5 .print-logo {
-  width: 120px !important;
+  width: 50px !important;
 }
 .sheet-a5 .print-leading-7 p {
   line-height: 1;

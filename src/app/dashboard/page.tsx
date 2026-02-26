@@ -1,4 +1,3 @@
-// src/app/dashboard/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -9,7 +8,7 @@ import {
   query,
   where,
   doc,
-  deleteDoc, // Removed updateDoc, serverTimestamp
+  deleteDoc,
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";

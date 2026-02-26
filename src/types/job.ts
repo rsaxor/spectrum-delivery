@@ -13,19 +13,21 @@ export interface Job {
   salesPerson?: string;
   deliveryType?: string;
   deliveryDate: string;
+  contactNo?: string;
 }
 
 export interface Package {
   id: number;
   size: "A4" | "A5";
-  itemNo: string;
+  // itemNo: string;
   desc: string;
   qty: string;
-  remarks: string;
+  // remarks: string;
 }
 
 export interface PrintData extends Package {
   job: Job;
   driver: string;
   totalBoxes: number;
+  totalQuantity?: string;
 }

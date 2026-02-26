@@ -1,8 +1,6 @@
-// src/components/dashboard/DashboardMetrics.tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Briefcase, CalendarClock, Banknote } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
-// Assuming you exported Job from your dashboard page or types file
 import { Job } from "@/app/dashboard/page"; 
 
 interface DashboardMetricsProps {

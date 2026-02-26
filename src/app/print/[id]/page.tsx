@@ -39,21 +39,68 @@ export default function PrintPackagePage() {
   const [job, setJob] = useState<Job | null>(null);
   const [driver, setDriver] = useState("");
   const [totalBoxes, setTotalBoxes] = useState(1);
+  const [totalQuantity, setTotalQuantity] = useState("");
   
   // Dialog & Loading States
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
 
   const [packages, setPackages] = useState<Package[]>([
-    { id: 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" }
+    // { id: 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" }
+    { id: 1, size: "A4", desc: "", qty: "" }
   ]);
 
   const handleBoxCountChange = (count: number) => {
     setTotalBoxes(count);
     const newPackages = Array.from({ length: count }).map((_, i) => {
-       return packages[i] || { id: i + 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" };
+      //  return packages[i] || { id: i + 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" };
+      return packages[i] || { id: i + 1, size: "A4", desc: "", qty: "" };
     });
     setPackages(newPackages);
+  };
+  
+  const handleQtyChange = (index: number, value: string) => {
+    // If totalQuantity is empty, just let them type whatever
+    if (!totalQuantity) {
+      updatePackage(index, "qty", value);
+      return;
+    }
+
+    // Extract numbers from strings (e.g. "500 pcs" -> 500)
+    const totalNum = parseInt(totalQuantity.replace(/\D/g, "")) || 0;
+    const inputNum = parseInt(value.replace(/\D/g, "")) || 0;
+
+    // Check if the current input alone exceeds the total
+    if (inputNum > totalNum) {
+      toast.error("Quantity Limit Exceeded", {
+        description: `This package quantity (${inputNum}) cannot be greater than the Total Job Quantity (${totalNum}).`
+      });
+      // Optionally reset the field or just cap it
+      updatePackage(index, "qty", totalNum.toString()); 
+      return;
+    }
+
+    // Advanced Check: Calculate the sum of ALL packages to make sure they don't exceed the total together
+    let sumOfOtherPackages = 0;
+    packages.forEach((pkg, i) => {
+        if (i !== index) {
+            sumOfOtherPackages += parseInt(pkg.qty.replace(/\D/g, "")) || 0;
+        }
+    });
+
+    if ((sumOfOtherPackages + inputNum) > totalNum) {
+        toast.error("Total Quantity Exceeded", {
+            description: `The combined package quantities exceed the Total Job Quantity (${totalNum}).`
+        });
+        
+        // Cap the input to whatever is remaining
+        const remainingAllowed = totalNum - sumOfOtherPackages;
+        updatePackage(index, "qty", remainingAllowed > 0 ? remainingAllowed.toString() : "0");
+        return;
+    }
+
+    // If it passes validation, update the state normally
+    updatePackage(index, "qty", value);
   };
 
   const updatePackage = (index: number, field: keyof Package, value: string) => {
@@ -109,10 +156,10 @@ export default function PrintPackagePage() {
   });
 
   const triggerLabelPrint = (pkg: Package) => {
-     setPrintData({ ...pkg, job: job!, driver, totalBoxes });
-     setTimeout(() => {
-        handleLabelPrint();
-     }, 100);
+    setPrintData({ ...pkg, job: job!, driver, totalBoxes, totalQuantity });
+    setTimeout(() => {
+      handleLabelPrint();
+    }, 100);
   };
 
   const masterRef = useRef<HTMLDivElement>(null);
@@ -157,7 +204,8 @@ export default function PrintPackagePage() {
 
       {/* DRIVER & BOX COUNT */}
       <Card className="bg-slate-50 border-slate-200">
-        <CardContent className="pt-6 grid grid-cols-2 gap-6">
+        {/* <CardContent className="pt-6 grid grid-cols-2 gap-6"> */}
+        <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
                 <Label>Logistics / Driver</Label>
                 <Select onValueChange={setDriver}>
@@ -181,6 +229,15 @@ export default function PrintPackagePage() {
                    onChange={(e) => handleBoxCountChange(Number(e.target.value))} 
                 />
             </div>
+            <div className="space-y-2">
+                <Label>Total Quantity</Label>
+                <Input 
+                   type="text" 
+                   placeholder="enter total qty of the job"
+                   value={totalQuantity} 
+                   onChange={(e) => setTotalQuantity(e.target.value)} 
+                />
+            </div>
         </CardContent>
       </Card>
 
@@ -196,8 +253,8 @@ export default function PrintPackagePage() {
                     </Button>
                 </CardTitle>
              </CardHeader>
-             <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                
+             {/* <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-4"> */}
+              <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
                     <Label>Size</Label>
                     <Select value={pkg.size} onValueChange={(v) => updatePackage(index, "size", v as "A4" | "A5")}>
@@ -209,10 +266,10 @@ export default function PrintPackagePage() {
                     </Select>
                 </div>
 
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                     <Label>Item No.</Label>
                     <Input value={pkg.itemNo} onChange={(e) => updatePackage(index, "itemNo", e.target.value)} />
-                </div>
+                </div> */}
 
                 <div className="space-y-2 md:col-span-2">
                     <Label>Description</Label>
@@ -221,13 +278,13 @@ export default function PrintPackagePage() {
 
                  <div className="space-y-2">
                     <Label>Quantity</Label>
-                    <Input value={pkg.qty} onChange={(e) => updatePackage(index, "qty", e.target.value)} />
+                    <Input value={pkg.qty} onChange={(e) => handleQtyChange(index, e.target.value)} />
                 </div>
 
-                <div className="space-y-2 md:col-span-5">
+                {/* <div className="space-y-2 md:col-span-5">
                     <Label>Remarks</Label>
                     <Input value={pkg.remarks} onChange={(e) => updatePackage(index, "remarks", e.target.value)} />
-                </div>
+                </div> */}
 
              </CardContent>
            </Card>
@@ -238,7 +295,7 @@ export default function PrintPackagePage() {
       {/* These utilize the new separated components */}
       <div style={{ display: "none" }}>
          <LabelTemplate ref={labelRef} data={printData} size={printData?.size || null} />
-         <MasterDeliveryNote ref={masterRef} job={job} driver={driver} packages={packages} />
+         <MasterDeliveryNote ref={masterRef} job={job} driver={driver} packages={packages} totalQuantity={totalQuantity} salesPerson={job.salesPerson} />
       </div>
 
       {/* --- CONFIRMATION DIALOG --- */}

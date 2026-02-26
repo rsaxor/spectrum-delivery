@@ -1,4 +1,3 @@
-// src/app/print-preview/page.tsx
 "use client";
 
 import { LabelTemplate } from "@/components/print/LabelTemplate";
@@ -19,10 +18,10 @@ export default function PrintPreviewPage() {
   const dummyPackage: Package = {
     id: 1,
     size: "A4",
-    itemNo: "ITEM-001",
+    // itemNo: "ITEM-001",
     desc: "1000x Business Cards (Matte Finish) & 500x Flyers",
     qty: "1500",
-    remarks: "Handle with care, keep dry.",
+    // remarks: "Handle with care, keep dry.",
   };
 
   const dummyPrintData: PrintData = {
@@ -30,12 +29,15 @@ export default function PrintPreviewPage() {
     job: dummyJob,
     driver: "Shahul",
     totalBoxes: 3,
+    totalQuantity: "3000"
   };
 
   const dummyPackagesList: Package[] = [
     dummyPackage,
-    { id: 2, size: "A4", itemNo: "ITEM-002", desc: "A3 Posters", qty: "50", remarks: "Rolled in tube" },
-    { id: 3, size: "A5", itemNo: "ITEM-003", desc: "Branded Pens", qty: "200", remarks: "" }
+    // { id: 2, size: "A4", itemNo: "ITEM-002", desc: "A3 Posters", qty: "50", remarks: "Rolled in tube" },
+    // { id: 3, size: "A5", itemNo: "ITEM-003", desc: "Branded Pens", qty: "200", remarks: "" }
+    { id: 2, size: "A4", desc: "A3 Posters", qty: "50" },
+    { id: 3, size: "A5", desc: "Branded Pens", qty: "200" }
   ];
 
   return (
@@ -49,7 +51,7 @@ export default function PrintPreviewPage() {
       <div className="flex flex-col gap-2">
         <h2 className="text-white font-bold tracking-widest text-sm uppercase">A5 Label Template Preview</h2>
         {/* We wrap it in a white div with a shadow to simulate paper */}
-        <div className="bg-white shadow-2xl overflow-hidden" style={{ width: '148mm', minHeight: '210mm' }}>
+        <div className="bg-white shadow-2xl overflow-hidden" style={{ width: '210mm', minHeight: '297mm' }}>
            <LabelTemplate data={dummyPrintData} size="A5" />
         </div>
       </div>
@@ -58,8 +60,9 @@ export default function PrintPreviewPage() {
       <div className="flex flex-col gap-2">
         <h2 className="text-white font-bold tracking-widest text-sm uppercase">A4 Label Template Preview</h2>
         {/* We wrap it in a white div with a shadow to simulate paper */}
-        <div className="bg-white shadow-2xl overflow-hidden" style={{ width: '210mm', minHeight: '297mm' }}>
-           <LabelTemplate data={dummyPrintData} size="A4" />
+        <div className="bg-white shadow-2xl overflow-hidden relative" style={{ width: '210mm', minHeight: '297mm' }}>
+          <LabelTemplate data={dummyPrintData} size="A4" />
+          <div className="absolute left-0 right-0 top-1/2 border-t-2 border-dashed border-gray-300 pointer-events-none"></div>
         </div>
       </div>
 

@@ -102,14 +102,19 @@ export default function HistoryPage() {
         return;
     }
 
-    const start = startDate ? new Date(startDate).getTime() : 0;
-    const end = endDate ? new Date(endDate).getTime() + 86400000 : Infinity; 
+    // Use setHours to safely lock the time to local midnight/end-of-day
+    // This prevents timezone drift from pushing a date into the previous/next day
+    const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : 0;
+    const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : Infinity; 
 
     const filtered = data.filter(job => {
-        const timestamp = job.completedAt || job.createdAt;
-        const jobDate = timestamp?.seconds ? timestamp.seconds * 1000 : 0;
+        // We now filter by 'deliveryDate' so it matches what the user sees in the table
+        if (!job.deliveryDate) return false;
+        
+        const jobDate = new Date(job.deliveryDate).getTime();
         return jobDate >= start && jobDate <= end;
     });
+    
     setFilteredData(filtered);
 
   }, [startDate, endDate, data]);
@@ -284,7 +289,8 @@ export default function HistoryPage() {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    initialState: { pagination: { pageSize: 10 } }
+    initialState: { pagination: { pageSize: 10 } },
+    autoResetPageIndex: true,
   });
 
   return (
