@@ -59,6 +59,13 @@ export default function PrintPackagePage() {
     setPackages(newPackages);
   };
 
+  const handleTotalQuantityChange = (newTotal: string) => {
+    setTotalQuantity(newTotal);
+    
+    const resetPackages = packages.map(pkg => ({ ...pkg, qty: "" }));
+    setPackages(resetPackages);
+  };
+
   const handleQtyChange = (index: number, value: string) => {
     // If totalQuantity is empty, just let them type whatever
     if (!totalQuantity) {
@@ -241,7 +248,7 @@ export default function PrintPackagePage() {
                    type="text" 
                    placeholder="enter total qty of the job"
                    value={totalQuantity} 
-                   onChange={(e) => setTotalQuantity(e.target.value)} 
+                   onChange={(e) => handleTotalQuantityChange(e.target.value)} 
                 />
             </div>
         </CardContent>
