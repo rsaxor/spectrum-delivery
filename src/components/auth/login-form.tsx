@@ -86,10 +86,19 @@ export function LoginForm() {
       await setPersistence(auth, persistence);
       
       // 3. Login
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      // await signInWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      const userEmail = userCredential.user.email;
 
-      toast.success("Welcome back!");
-      router.push("/"); 
+      if (userEmail === "production@spectrumdubai.com") {
+        document.cookie = "userRole=production; path=/; max-age=86400";
+        toast.success("Welcome, Production Team");
+        router.push("/label-print");
+      } else {
+        document.cookie = "userRole=admin; path=/; max-age=86400";
+        toast.success("Login Successful");
+        router.push("/"); 
+      }
       
     } catch (error: unknown) { 
       console.error("Login Error:", error);
