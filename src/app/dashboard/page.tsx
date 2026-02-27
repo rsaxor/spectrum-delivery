@@ -64,6 +64,7 @@ import {
   HandHeart,
   Boxes,
 	LogOut,
+  Tag,
 } from "lucide-react";
 
 import { DashboardMetrics } from "@/components/dashboard/DashboardMetrics";
@@ -479,6 +480,11 @@ export default function Dashboard() {
           Active Jobs
         </h1>
         <div className="flex gap-2">
+          <Link href="/label-print">
+            <Button variant="outline" className="border-blue-600 text-blue-700 hover:bg-blue-50">
+              <Tag className="mr-2 h-4 w-4" /> Quick Print
+            </Button>
+          </Link>
           <Link href="/jobs/new">
             <Button className="bg-slate-900 text-white">
               <Plus className="mr-2 h-4 w-4" /> New Job

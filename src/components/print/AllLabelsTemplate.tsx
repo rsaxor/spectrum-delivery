@@ -1,7 +1,6 @@
-// src/components/print/AllLabelsTemplate.tsx
 import { forwardRef } from "react";
 import { Job, Package } from "@/types/job";
-import { LabelTemplate } from "./LabelTemplate"; // Importing your existing single label!
+import { LabelTemplate } from "./LabelTemplate";
 
 interface AllLabelsTemplateProps {
   job: Job | null;
@@ -15,7 +14,7 @@ export const AllLabelsTemplate = forwardRef<HTMLDivElement, AllLabelsTemplatePro
   ({ job, driver, totalBoxes, totalQuantity, packages }, ref) => {
     if (!job || packages.length === 0) return null;
 
-    // We will group the packages into physical A4 pages
+    // Group the packages into physical A4 pages
     const pages: Package[][] = [];
     let currentA5Pair: Package[] = [];
 
@@ -28,7 +27,7 @@ export const AllLabelsTemplate = forwardRef<HTMLDivElement, AllLabelsTemplatePro
         }
         pages.push([pkg]);
       } else {
-        // It's an A5 label, let's try to pair it up!
+        // It's an A5 label, pair it up!
         currentA5Pair.push(pkg);
         if (currentA5Pair.length === 2) {
           pages.push([...currentA5Pair]);
@@ -47,7 +46,7 @@ export const AllLabelsTemplate = forwardRef<HTMLDivElement, AllLabelsTemplatePro
         {pages.map((pagePackages, index) => (
           <div 
             key={index} 
-            className="bg-white flex flex-col" 
+            className="" 
             style={{ 
               width: '210mm', 
               height: '297mm', // Force the wrapper to act as an A4 sheet
@@ -56,7 +55,7 @@ export const AllLabelsTemplate = forwardRef<HTMLDivElement, AllLabelsTemplatePro
             }}
           >
             {pagePackages.map((pkg) => (
-              // We reuse your exact LabelTemplate to keep styling identical!
+              // Reuse exact LabelTemplate
               <LabelTemplate
                 key={pkg.id}
                 data={{ ...pkg, job, driver, totalBoxes, totalQuantity }}
