@@ -18,7 +18,7 @@ export interface Job {
 
 export interface Package {
   id: number;
-  size: "A4" | "A5";
+  size: "A5" | "A4";
   // itemNo: string;
   desc: string;
   qty: string;

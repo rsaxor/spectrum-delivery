@@ -148,6 +148,12 @@
   margin: 0; /* Let the component handle margins */
 }
 
+.flower-bg {
+  background-image: url(/flowers.png);
+    background-size: 70%;
+    background-repeat: repeat;
+    background-position: center;
+}
 /* A4 Portrait Class */
 .sheet-a4 {
   width: 210mm;

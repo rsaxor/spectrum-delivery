@@ -16,7 +16,7 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
   return (
     <div ref={ref} className="p-5 font-sans bg-white text-black sheet-a4 flex flex-col h-full">
       {/* HEADER */}
-      <div className="bg-green-900 p-5 text-white">
+      <div className="bg-green-900 p-5 text-white flower-bg">
         <div className="flex md:flex-row items-stretch">
           <div className="w-full">
             <Image
@@ -128,7 +128,7 @@ export const MasterDeliveryNote = forwardRef<HTMLDivElement, MasterProps>(({ job
           <p className="text-right my-3 text-md">{driver ? <>Logistic: <strong>{driver}</strong> | </> : <></>} Sales person: <strong>{salesPerson}</strong></p>
           <p className="text-right my-3 text-md">Total Job Quantity: <strong>{totalQuantity || "Missing"}</strong></p>
         </div>
-        <div className="bg-green-900 print-footer text-white mt-auto">
+        <div className="bg-green-900 print-footer text-white mt-auto flower-bg">
           <p className="font-bold mb-9 text-md">Checked by:</p>
           <div className="flex md:flex-row justify-end">
             <div className="w-full md:w-1/2">

@@ -16,10 +16,10 @@ export const LabelTemplate = forwardRef<HTMLDivElement, LabelTemplateProps>(({ d
 
   return (
     <div ref={ref} className={`font-sans bg-white text-black ${sizePreview ? "sheet-a4" : "sheet-a5"}`}>
-      <div className="p-4">
+      <div className="p-4 h-full flex flex-col justify-between">
         <div className="border-b border-dotted border-black flex flex-row items-stretch">
           <div className="w-2/3">
-            <div className="bg-green-900 py-3 text-white mb-4">
+            <div className="bg-green-900 py-3 text-white mb-4 flower-bg">
               <Image
                 src="/spec-white.png"
                 alt="Spectrum logo"
@@ -32,30 +32,30 @@ export const LabelTemplate = forwardRef<HTMLDivElement, LabelTemplateProps>(({ d
             </div>
             <div className="leading-none">
               <div className="border-black border-b border-dotted pb-2">
-                <p className="text-sm">Client: <span className="uppercase text-3xl font-bold">{data.job?.client}</span></p>
-                <p className="text-sm">Invoice No: {data.job?.invoiceNo}</p>
+                <p className="text-xl">Client: <span className="uppercase text-3xl font-bold">{data.job?.client}</span></p>
+                <p className="text-xl">Invoice No: {data.job?.invoiceNo}</p>
               </div>
               <div className="border-black border-b border-dotted py-2">
-                <p className="text-sm">Job name: <span className="uppercase text-xl font-bold">{data.job?.jobName}</span></p>
-                <p className="text-sm">Contact No: {data.job?.contactNo || "N/A"}</p>
+                <p className="text-xl">Job name: <span className="uppercase text-xl font-bold">{data.job?.jobName}</span></p>
               </div>
-              <div className="border-black border-b border-dotted py-2">
-                <p className="text-sm">Address/Delivery to: <span className="uppercase text-xl font-bold"><br />{data.job?.location}</span></p>
+              <div className="border-black border-b border-dotted py-2 flex flex-row items-stretch pr-5">
+                <p className="text-xl w-full">Address/Delivery to: <span className="uppercase text-xl font-bold"><br />{data.job?.location}</span></p>
+                <p className="text-xl pr-3">Contact No: {data.job?.contactNo || "N/A"}</p>
               </div>
               <div className="border-black py-2 flex flex-row items-stretch pr-5">
-                <p className="text-sm pr-3">Package/Item description: </p>
-                <p className="text-xl font-bold w-full">{data.desc}</p>
+                <p className="text-xl pr-3">Package/Item description: </p>
+                <p className="text-3xl font-bold w-full">{data.desc}</p>
               </div>
             </div>
           </div>
           <div className="w-1/3 border-black border-l border-dotted">
             <div className="border-black border-b border-dotted pl-3 pb-1">
               <p className="m-0">Quantity:</p>
-              <p className="text-center text-4xl pb-3 font-bold">{data.qty} / {data.totalQuantity}</p>
+              <p className="text-center text-5xl pb-3 font-bold">{data.qty} / {data.totalQuantity}</p>
             </div>
             <div className="pl-3 pt-1">
               <p className="m-0">No. of Boxes</p>
-              <p className="text-center text-5xl">
+              <p className="text-center text-6xl">
                 <span className="pt-2 block font-bold">{data.id}</span>
                 <span className="block py-5 text-4xl">of</span>
                 <span className="block font-bold">{data.totalBoxes}</span>

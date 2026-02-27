@@ -31,6 +31,7 @@ import { Job, Package, PrintData } from "@/types/job";
 import { LabelTemplate } from "@/components/print/LabelTemplate";
 import { MasterDeliveryNote } from "@/components/print/MasterDeliveryNote";
 import { DRIVERS } from "@/lib/constants";
+import { AllLabelsTemplate } from "@/components/print/AllLabelsTemplate";
 
 export default function PrintPackagePage() {
   const { id } = useParams();
@@ -47,14 +48,14 @@ export default function PrintPackagePage() {
 
   const [packages, setPackages] = useState<Package[]>([
     // { id: 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" }
-    { id: 1, size: "A4", desc: "", qty: "" }
+    { id: 1, size: "A5", desc: "", qty: "" }
   ]);
 
   const handleBoxCountChange = (count: number) => {
     setTotalBoxes(count);
     const newPackages = Array.from({ length: count }).map((_, i) => {
       //  return packages[i] || { id: i + 1, size: "A4", itemNo: "", desc: "", qty: "", remarks: "" };
-      return packages[i] || { id: i + 1, size: "A4", desc: "", qty: "" };
+      return packages[i] || { id: i + 1, size: "A5", desc: "", qty: "" };
     });
     setPackages(newPackages);
   };
@@ -175,6 +176,12 @@ export default function PrintPackagePage() {
     documentTitle: `Delivery_Note_${job?.invoiceNo || "Master"}`,
   });
 
+  const allLabelsRef = useRef<HTMLDivElement>(null);
+  const handlePrintAllLabels = useReactToPrint({
+    contentRef: allLabelsRef,
+    documentTitle: `All_Labels_${job?.invoiceNo}`,
+  });
+
   if (!job) return <div className="p-10 flex items-center gap-2"><Loader2 className="animate-spin" /> Loading Job...</div>;
 
   return (
@@ -198,7 +205,15 @@ export default function PrintPackagePage() {
                 <FileText className="mr-2 h-4 w-4" />
                 Print Master Delivery
             </Button>
-
+            {packages.length > 1 && (
+              <Button 
+                onClick={() => handlePrintAllLabels()} 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Printer className="mr-2 h-4 w-4" />
+                Print All Labels
+              </Button>
+            )}
             <Button 
                 onClick={() => setShowCompleteDialog(true)}
                 className="bg-green-600 hover:bg-green-700 text-white"
@@ -247,7 +262,9 @@ export default function PrintPackagePage() {
             </div>
         </CardContent>
       </Card>
-
+      <div className="text-right my-5">
+        {/* BUTTON FOR PRINT ALL GOES HERE */}
+      </div>                
       {/* PACKAGE FORMS */}
       <div className="space-y-4">
         {packages.map((pkg, index) => (
@@ -264,11 +281,11 @@ export default function PrintPackagePage() {
               <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
                     <Label>Size</Label>
-                    <Select value={pkg.size} onValueChange={(v) => updatePackage(index, "size", v as "A4" | "A5")}>
+                    <Select value={pkg.size} onValueChange={(v) => updatePackage(index, "size", v as "A5" | "A4")}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="A4">A4 (Full Sheet)</SelectItem>
                             <SelectItem value="A5">A5 (Half Sheet)</SelectItem>
+                            <SelectItem value="A4">A4 (Full Sheet)</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -303,6 +320,7 @@ export default function PrintPackagePage() {
       <div style={{ display: "none" }}>
          <LabelTemplate ref={labelRef} data={printData} size={printData?.size || null} />
          <MasterDeliveryNote ref={masterRef} job={job} driver={driver} packages={packages} totalQuantity={totalQuantity} salesPerson={job.salesPerson} />
+         <AllLabelsTemplate ref={allLabelsRef} job={job} driver={driver} packages={packages} totalBoxes={totalBoxes} totalQuantity={totalQuantity} />
       </div>
 
       {/* --- CONFIRMATION DIALOG --- */}
