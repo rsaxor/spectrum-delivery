@@ -84,7 +84,7 @@ export default function PrintPackagePage() {
         description: `This package quantity (${inputNum}) cannot be greater than the Total Job Quantity (${totalNum}).`
       });
       // Optionally reset the field or just cap it
-      updatePackage(index, "qty", totalNum.toString()); 
+      updatePackage(index, "qty", ""); 
       return;
     }
 
