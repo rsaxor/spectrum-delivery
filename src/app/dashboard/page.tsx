@@ -188,20 +188,35 @@ export default function Dashboard() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === "asc")
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Date
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <span className="text-gray-600 text-sm whitespace-nowrap">
-          {row.getValue("deliveryDate")}
-        </span>
-      ),
+      cell: ({ row }) => {
+        const deliveryDate = row.getValue("deliveryDate") as string;
+        const todayStr = new Date().toISOString().split("T")[0];
+        
+        // Default styling (Future dates)
+        let styleClass = "text-gray-600 bg-transparent";
+        
+        // Conditional styling
+        if (deliveryDate < todayStr) {
+          // Delayed: Red background
+          styleClass = "bg-red-100 text-red-800 font-bold px-2 py-1 rounded";
+        } else if (deliveryDate === todayStr) {
+          // Due Today: Yellow background
+          styleClass = "bg-yellow-100 text-yellow-800 font-bold px-2 py-1 rounded";
+        }
+
+        return (
+          <span className={`text-sm whitespace-nowrap ${styleClass}`}>
+            {deliveryDate}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "client",
